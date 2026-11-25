@@ -1,6 +1,6 @@
 import unittest
 
-from widget import is_slug, slugify
+from widget import is_slug, slugify, unslugify
 
 
 class SlugifyTest(unittest.TestCase):
@@ -44,6 +44,17 @@ class IsSlugTest(unittest.TestCase):
         for text in ("Hello-World", "hello--world", "-hello", ""):
             with self.subTest(text=text):
                 self.assertFalse(is_slug(text))
+
+
+class UnslugifyTest(unittest.TestCase):
+    def test_words(self):
+        self.assertEqual(unslugify("hello-world"), "Hello World")
+
+    def test_empty_parts(self):
+        self.assertEqual(unslugify("--a--b-"), "A B")
+
+    def test_empty(self):
+        self.assertEqual(unslugify(""), "")
 
 
 if __name__ == "__main__":
