@@ -1,8 +1,18 @@
 # Usage
 
-`widget.slugify(text, max_length=None, separator="_")` returns the lower-case words of `text`
-joined by single `separator` characters: `slugify("Hello, World!")` is `"hello_world"`, and
-`slugify("Hello, World!", separator="-")` is `"hello-world"`.
+`widget.slugify(text, max_length=None, separator="_", keep_case=False)` returns the lower-case
+words of `text` joined by single `separator` characters: `slugify("Hello, World!")` is
+`"hello_world"`, and `slugify("Hello, World!", separator="-")` is `"hello-world"`.
+
+`keep_case` chooses the case of the letters:
+
+- `False` (the default): every letter is lower-cased, as before, so existing slugs and links do
+  not change (`slugify("iPhone Case")` is `"iphone_case"`).
+- `True`: every letter keeps its original case (`slugify("iPhone Case", keep_case=True)` is
+  `"iPhone_Case"`), so `"iPhone"` and `"IPHONE"` give different slugs.
+
+`max_length` and `separator` work the same with either value of `keep_case`
+(`slugify("Hello big World", max_length=9, separator="-", keep_case=True)` is `"Hello-big"`).
 
 > **Note:** the default separator changed from a dash (`-`) to an underscore (`_`), so slugs
 > can be used as identifiers. Callers that want dashes pass `separator="-"`.
