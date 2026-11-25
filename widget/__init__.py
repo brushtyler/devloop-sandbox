@@ -7,8 +7,15 @@ def _check_separator(separator: str) -> None:
         raise ValueError("separator must be a single non-alphanumeric character")
 
 
-def slugify(text: str, max_length: int | None = None, separator: str = "_") -> str:
+def slugify(
+    text: str,
+    max_length: int | None = None,
+    separator: str = "_",
+    keep_case: bool = False,
+) -> str:
     """Lower-case words of ``text`` joined by single ``separator`` characters.
+
+    With ``keep_case=True`` every letter keeps its original case instead.
 
     ``separator`` must be a single non-alphanumeric character (``ValueError``
     otherwise); it defaults to an underscore.
@@ -21,7 +28,9 @@ def slugify(text: str, max_length: int | None = None, separator: str = "_") -> s
     _check_separator(separator)
     if max_length is not None and max_length < 1:
         raise ValueError("max_length must be at least 1")
-    words = "".join(c.lower() if c.isalnum() else " " for c in text).split()
+    words = "".join(
+        (c if keep_case else c.lower()) if c.isalnum() else " " for c in text
+    ).split()
     slug = separator.join(words)
     if max_length is None or len(slug) <= max_length:
         return slug

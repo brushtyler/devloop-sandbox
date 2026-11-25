@@ -54,6 +54,36 @@ class SlugifySeparatorTest(unittest.TestCase):
                     slugify("x", separator=separator)
 
 
+class SlugifyKeepCaseTest(unittest.TestCase):
+    def test_keep_case(self):
+        self.assertEqual(slugify("iPhone Case", keep_case=True), "iPhone_Case")
+
+    def test_default_lowercases(self):
+        self.assertEqual(slugify("iPhone Case"), "iphone_case")
+        self.assertEqual(slugify("iPhone Case", keep_case=False), "iphone_case")
+
+    def test_default_unchanged_for_existing_links(self):
+        self.assertEqual(slugify("Hello, World!"), "hello_world")
+
+    def test_keep_case_distinguishes_case(self):
+        self.assertEqual(slugify("IPHONE", keep_case=True), "IPHONE")
+        self.assertNotEqual(
+            slugify("iPhone", keep_case=True), slugify("IPHONE", keep_case=True)
+        )
+
+    def test_keep_case_collapses_non_alphanumeric_runs(self):
+        self.assertEqual(slugify("  Hello,  World!! ", keep_case=True), "Hello_World")
+
+    def test_keep_case_with_max_length_and_separator(self):
+        self.assertEqual(
+            slugify("Hello big World", max_length=9, separator="-", keep_case=True),
+            "Hello-big",
+        )
+        self.assertEqual(
+            slugify("Supercalifragilistic", max_length=5, keep_case=True), "Super"
+        )
+
+
 class IsSlugTest(unittest.TestCase):
     def test_valid_slug(self):
         self.assertTrue(is_slug("hello_world"))
