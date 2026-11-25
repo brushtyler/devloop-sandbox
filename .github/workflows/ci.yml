@@ -7,11 +7,22 @@ permissions:
   contents: read
 jobs:
   test:
-    name: Unit Tests
+    name: Unit Tests (${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
       - run: python3 -m unittest discover -s tests -v
+  # The check the ruleset of main requires: it passes only if every Python version passed.
+  unit-tests:
+    name: Unit Tests
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "${{ needs.test.result }}" = success
