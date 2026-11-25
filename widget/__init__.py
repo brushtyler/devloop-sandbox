@@ -20,3 +20,8 @@ def slugify(text: str, max_length: int | None = None) -> str:
         words.pop()
         slug = "-".join(words)
     return slug
+
+
+def unslugify(slug: str) -> str:
+    """Capitalised words of ``slug``, split on dashes, joined by single spaces."""
+    return " ".join(part.capitalize() for part in slug.split("-") if part)

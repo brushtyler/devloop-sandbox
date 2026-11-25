@@ -11,3 +11,7 @@
   than `max_length`, the slug is its first `max_length` characters
   (`slugify("Supercalifragilistic", max_length=5)` is `"super"`).
 - Lower than 1: raises `ValueError`.
+
+`widget.unslugify(slug)` is the reverse of `slugify`: it splits `slug` on dashes, drops empty parts,
+capitalises each word and joins them with single spaces, so `unslugify("hello-world")`
+returns `"Hello World"`.
