@@ -22,6 +22,11 @@ def slugify(text: str, max_length: int | None = None) -> str:
     return slug
 
 
+def is_slug(text: str) -> bool:
+    """True when ``text`` is non-empty and already its own slug."""
+    return bool(text) and slugify(text) == text
+
+
 def unslugify(slug: str) -> str:
     """Capitalised words of ``slug``, split on dashes, joined by single spaces."""
     return " ".join(part.capitalize() for part in slug.split("-") if part)

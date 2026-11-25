@@ -1,6 +1,6 @@
 import unittest
 
-from widget import slugify, unslugify
+from widget import is_slug, slugify, unslugify
 
 
 class SlugifyTest(unittest.TestCase):
@@ -34,6 +34,16 @@ class SlugifyTest(unittest.TestCase):
             slugify("Hello", max_length=0)
         with self.assertRaises(ValueError):
             slugify("Hello", max_length=-1)
+
+
+class IsSlugTest(unittest.TestCase):
+    def test_valid_slug(self):
+        self.assertTrue(is_slug("hello-world"))
+
+    def test_invalid_slugs(self):
+        for text in ("Hello-World", "hello--world", "-hello", ""):
+            with self.subTest(text=text):
+                self.assertFalse(is_slug(text))
 
 
 class UnslugifyTest(unittest.TestCase):
